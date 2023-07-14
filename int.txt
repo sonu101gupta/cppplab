@@ -1,0 +1,652 @@
+####################****prog1****####################
+
+
+
+Q)1. Design a C++ program to implement stack using following functions: a)Push b)Pop c) Display
+
+#include <iostream>
+#define SIZE 5
+
+class Stack {
+    int top;
+    int stack[SIZE];
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    void push(int ele) {
+        if (top == SIZE - 1) {
+            std::cout << "Overflow: Stack is full" << std::endl;
+        } else {
+            top++;
+            stack[top] = ele;
+            std::cout << "Element pushed into the stack is " << stack[top] << std::endl;
+        }
+    }
+
+    void pop() {
+        if (top == -1) {
+            std::cout << "Underflow: Stack is empty" << std::endl;
+        } else {
+            std::cout << "Popped element is " << stack[top] << std::endl;
+            top--;
+        }
+    }
+
+    void display() {
+        if (top == -1) {
+            std::cout << "Stack is empty" << std::endl;
+        } else {
+            std::cout << "Elements in the stack:" << std::endl;
+            for (int i = top; i >= 0; i--) {
+                std::cout << stack[i] << std::endl;
+            }
+        }
+    }
+};
+
+int main() {
+    int choice, element;
+    Stack stack;
+
+    while (true) {
+        std::cout << "1. Push" << std::endl;
+        std::cout << "2. Pop" << std::endl;
+        std::cout << "3. Display" << std::endl;
+        std::cout << "4. Exit" << std::endl;
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter the element to push: ";
+                std::cin >> element;
+                stack.push(element);
+                break;
+            case 2:
+                stack.pop();
+                break;
+            case 3:
+                stack.display();
+                break;
+            case 4:
+                return 0;
+            default:
+                std::cout << "Invalid choice" << std::endl;
+        }
+    }
+}
+
+
+
+
+
+
+####################****prog2****####################
+
+
+
+
+
+Q)2.
+a) Design a C++ program to read the data of n employee and compute net salary of each employee
+using pointer. Given that an employee class contains following :- Data members: Employee no,
+Employee name, Basic salary, DA, IT, Net salary, gross salary Member functions: To read data, to
+calculate net salary and to print data[DA = 52% of basic salary, IT = 30% of gross salary, Gross salary
+= DA + Basic, Net salary = DA + Basic– IT].
+
+
+
+
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+class Employee {
+int empNo;
+string empName;
+double basicSalary;
+double DA;
+double IT;
+double netSalary;
+double grossSalary;
+public:
+void readData() {
+cout << "Enter Employee Number: ";
+cin >> empNo;
+cin.ignore(); // Ignore newline character left in the input stream
+cout << "Enter Employee Name: ";
+getline(cin, empName);
+cout << "Enter Basic Salary: ";
+cin >> basicSalary;
+}
+void calculateNetSalary() {
+DA = 0.52 * basicSalary;
+grossSalary = DA + basicSalary;
+IT = 0.30 * grossSalary;
+netSalary = DA + basicSalary - IT;
+}
+void printData() {
+cout << "Employee Number: " << empNo << endl;
+cout << "Employee Name: " << empName << endl;
+cout << "Basic Salary: " << basicSalary << endl;
+cout << "DA: " << DA << endl;
+cout << "IT: " << IT << endl;
+cout << "Gross Salary: " << grossSalary << endl;
+cout << "Net Salary: " << netSalary << endl;
+cout << endl;
+}
+};
+int main() {
+int n;
+cout << "Enter the number of employees: ";
+cin >> n;
+Employee* employees = new Employee[n];
+for (int i = 0; i < n; i++) {
+cout << "Enter details for Employee " << i + 1 << ":" << endl;
+employees[i].readData();
+employees[i].calculateNetSalary();
+}
+cout << endl;
+cout << "Employee Details:" << endl;
+for (int i = 0; i < n; i++) {
+cout << "Employee " << i + 1 << ":" << endl;
+employees[i].printData();
+}
+delete[] employees; // Release the memory allocated for the array of employees
+return 0;
+}
+
+
+
+
+
+b) Design a C++ program to find the largest of three numbers using inline function.
+#include <iostream>
+using namespace std;
+inline int findLargest(int a, int b, int c) {
+return (a > b && a > c) ? a : (b > c) ? b : c;
+}
+int main() {
+int num1, num2, num3;
+cout << "Enter three numbers: ";
+cin >> num1 >> num2 >> num3;
+int largest = findLargest(num1, num2, num3);
+cout << "The largest number is: " << largest << endl;
+return 0;
+}
+
+
+
+
+
+
+####################****prog3****####################
+
+
+
+
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Student {
+    string usn;
+    string name;
+    int marks[3];
+
+public:
+    void readData() {
+        cout << "Enter USN: ";
+        cin >> usn;
+        cin.ignore();
+        cout << "Enter Name: ";
+        getline(cin, name);
+        cout << "Enter Marks for 3 Subjects:" << endl;
+        for (int i = 0; i < 3; i++) {
+            cout << "Subject " << i + 1 << ": ";
+            cin >> marks[i];
+        }
+    }
+
+    void displayData() {
+        cout << "USN: " << usn << endl;
+        cout << "Name: " << name << endl;
+        cout << "Marks: ";
+        for (int i = 0; i < 3; i++) {
+            cout << marks[i] << " ";
+        }
+        cout << endl;
+    }
+
+    double calculateAverage() {
+        int sum = 0;
+        int lowestMark = marks[0];
+        for (int i = 0; i < 3; i++) {
+            sum += marks[i];
+            if (marks[i] < lowestMark) {
+                lowestMark = marks[i];
+            }
+        }
+        sum -= lowestMark;
+        return static_cast<double>(sum) / 2;
+    }
+
+    static Student findTopper(Student students[], int n) {
+        Student topper = students[0];
+        double highestAverage = topper.calculateAverage();
+        for (int i = 1; i < n; i++) {
+            double average = students[i].calculateAverage();
+            if (average > highestAverage) {
+                highestAverage = average;
+                topper = students[i];
+            }
+        }
+        return topper;
+    }
+};
+
+int main() {
+    int n;
+    cout << "Enter the number of students: ";
+    cin >> n;
+
+    Student* students = new Student[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter details for Student " << i + 1 << ":" << endl;
+        students[i].readData();
+    }
+
+    cout << endl;
+    cout << "Student Details:" << endl;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Student " << i + 1 << ":" << endl;
+        students[i].displayData();
+        cout << "Average of Best 2 Marks: " << students[i].calculateAverage() << endl;
+        cout << endl;
+    }
+
+    Student topper = Student::findTopper(students, n);
+    cout << "Topper:" << endl;
+    topper.displayData();
+    cout << "Average of Best 2 Marks: " << topper.calculateAverage() << endl;
+
+    delete[] students;
+
+    return 0;
+}
+
+
+
+
+
+####################****prog4****####################
+
+a) Design a C++ program to implement access control to a shared resource used by all objects of a class using a static variable.
+
+
+#include <iostream>
+using namespace std;
+
+class SharedResource {
+private:
+    static int resource; // Shared resource
+
+public:
+    void accessResource() {
+        if (resource > 0) {
+            cout << "Access granted to the shared resource." << endl;
+            resource--;
+        } else {
+            cout << "Access denied. Shared resource is currently unavailable." << endl;
+        }
+    }
+
+    static void setResourceCount(int count) {
+        resource = count;
+    }
+};
+
+int SharedResource::resource = 0; // Initialize static variable
+
+int main() {
+    SharedResource obj1;
+    SharedResource obj2;
+
+    SharedResource::setResourceCount(5); // Set the initial count of the shared resource
+
+    obj1.accessResource(); // Access granted
+    obj2.accessResource(); // Access granted
+    obj1.accessResource(); // Access granted
+    obj2.accessResource(); // Access granted
+    obj1.accessResource(); // Access granted
+    obj2.accessResource(); // Access granted
+    obj1.accessResource(); // Access denied
+    obj2.accessResource(); // Access denied
+
+    return 0;
+}
+
+
+
+
+
+
+b) Design a C++ program to keep track of the number of objects of a particular class type that are in existence using a static variable.
+
+
+
+
+#include <iostream>
+using namespace std;
+
+class ObjectCounter {
+private:
+    static int count; // Static variable to track the number of objects
+
+public:
+    ObjectCounter() {
+        count++; // Increment count when an object is created
+    }
+
+    ~ObjectCounter() {
+        count--; // Decrement count when an object is destroyed
+    }
+
+    static int getCount() {
+        return count;
+    }
+};
+
+int ObjectCounter::count = 0; // Initialize static variable
+
+int main() {
+    ObjectCounter obj1;
+    ObjectCounter obj2;
+
+    cout << "Number of objects: " << ObjectCounter::getCount() << endl; // Output: 2
+
+    ObjectCounter obj3;
+    ObjectCounter obj4;
+
+    cout << "Number of objects: " << ObjectCounter::getCount() << endl; // Output: 4
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+####################****prog5****####################
+
+
+
+
+Q)5. Design a C++ program to implement a class which accepts date in different formats (using
+constructor overloading).
+#include <iostream>
+#include <string>
+using namespace std;
+class Date {
+private:
+ int day;
+ int month;
+ int year;
+public:
+ Date() {
+ day = 1;
+ month = 1;
+ year = 2000;
+ }
+ Date(int d, int m, int y) {
+ day = d;
+ month = m;
+ year = y;
+ }
+ Date(string dateStr) {
+ // Assuming the date string is in the format "DD-MM-YYYY"
+ string delimiter = "-";
+ size_t pos = 0;
+ string token;
+ // Extract day
+ pos = dateStr.find(delimiter);
+ token = dateStr.substr(0, pos);
+ day = stoi(token);
+ dateStr.erase(0, pos + delimiter.length());
+ // Extract month
+ pos = dateStr.find(delimiter);
+ token = dateStr.substr(0, pos);
+ month = stoi(token);
+ dateStr.erase(0, pos + delimiter.length());
+ // Extract year
+ year = stoi(dateStr);
+ }
+ void displayDate() {
+ cout << "Date: " << day << "-" << month << "-" << year << endl;
+ }
+};
+int main() {
+ Date defaultDate;
+ Date specificDate(15, 9, 2022);
+ Date dateString("24-06-2023");
+ defaultDate.displayDate();
+ specificDate.displayDate();
+ dateString.displayDate();
+ return 0;
+}
+
+
+
+
+
+
+####################****prog6****####################
+
+
+Q)6. Design a C++ program to create class called list with member functions to insert an element
+from front as well as to delete element from front of list. Demonstrate all functions by creating list
+object.
+#include <iostream>
+using namespace std;
+class ListNode {
+public:
+ int data;
+ ListNode* next;
+ ListNode(int value) {
+ data = value;
+ next = nullptr;
+ }
+};
+class List {
+private:
+ ListNode* head;
+public:
+ List() {
+ head = nullptr;
+ }
+ void insertFront(int value) {
+ ListNode* newNode = new ListNode(value);
+ if (head == nullptr) {
+ head = newNode;
+ } else {
+ newNode->next = head;
+ head = newNode;
+ }
+ cout << "Element " << value << " inserted at the front of the list." << endl;
+ }
+ void deleteFront() {
+ if (head == nullptr) {
+ cout << "List is empty. Cannot delete element from the front." << endl;
+ } else {
+ int deletedValue = head->data;
+ ListNode* temp = head;
+ head = head->next;
+ delete temp;
+ cout << "Element " << deletedValue << " deleted from the front of the list." << endl;
+ }
+ }
+ void displayList() {
+ if (head == nullptr) {
+ cout << "List is empty." << endl;
+ } else {
+ ListNode* current = head;
+ cout << "Elements in the list: ";
+ while (current != nullptr) {
+ cout << current->data << " ";
+ current = current->next;
+ }
+ cout << endl;
+ }
+ }
+};
+int main() {
+ List myList;
+ myList.insertFront(10);
+ myList.insertFront(20);
+ myList.insertFront(30);
+ myList.displayList(); // Output: Elements in the list: 30 20 10
+ myList.deleteFront();
+ myList.displayList(); // Output: Elements in the list: 20 10
+ myList.deleteFront();
+ myList.deleteFront();
+ myList.displayList(); // Output: List is empty.
+ return 0;
+}
+
+
+
+
+
+####################****prog7****####################
+
+
+
+Q)7. Design a C++ program for a hospital to create a database regarding its indoor patients.
+(Identify the member function). create a base class to store above information, member function
+should include functions to enter information and display list of all the patients in the database.
+Create a derived class to store the information about paediatric patients (less than 12yrs age).
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+class Patient {
+protected:
+ string name;
+ int age;
+ string gender;
+ string diagnosis;
+public:
+ Patient(string n, int a, string g, string d) {
+ name = n;
+ age = a;
+ gender = g;
+ diagnosis = d;
+ }
+ void displayInfo() {
+ cout << "Name: " << name << endl;
+ cout << "Age: " << age << endl;
+ cout << "Gender: " << gender << endl;
+ cout << "Diagnosis: " << diagnosis << endl;
+ }
+};
+class PediatricPatient : public Patient {
+private:
+ string guardianName;
+public:
+ PediatricPatient(string n, int a, string g, string d, string guardian) : Patient(n, a, g, d) {
+ guardianName = guardian;
+ }
+ void displayInfo() {
+ cout << "Name: " << name << endl;
+ cout << "Age: " << age << endl;
+ cout << "Gender: " << gender << endl;
+ cout << "Diagnosis: " << diagnosis << endl;
+ cout << "Guardian Name: " << guardianName << endl;
+ }
+};
+int main() {
+ vector<Patient*> patients;
+ // Add adult patients
+ patients.push_back(new Patient("John Doe", 45, "Male", "Fever"));
+ patients.push_back(new Patient("Jane Smith", 32, "Female", "Injury"));
+ // Add pediatric patients
+ patients.push_back(new PediatricPatient("Alex Johnson", 8, "Male", "Flu", "Sarah Johnson"));
+ patients.push_back(new PediatricPatient("Emily Brown", 4, "Female", "Cold", "Jessica Brown"));
+ // Display information of all patients
+ for (Patient* patient : patients) {
+ patient->displayInfo();
+ cout << endl;
+ }
+ // Cleanup memory
+ for (Patient* patient : patients) {
+ delete patient;
+ }
+ return 0;
+}
+
+
+
+
+
+
+
+####################****prog8****####################
+
+
+
+
+Q)8. Design a C++ program for exception handling. Create a user defined exception classes for
+divide by zero and negative number input separately.
+#include <iostream>
+#include <exception>
+using namespace std;
+// Custom exception class for divide by zero
+class DivideByZeroException : public exception {
+public:
+ const char* what() const throw() {
+ return "Error: Divide by zero exception.";
+ }
+};
+// Custom exception class for negative number input
+class NegativeNumberException : public exception {
+public:
+ const char* what() const throw() {
+ return "Error: Negative number exception.";
+ }
+};
+double divideNumbers(int numerator, int denominator) {
+ if (denominator == 0) {
+ throw DivideByZeroException();
+ }
+ return static_cast<double>(numerator) / denominator;
+}
+int main() {
+ int numerator, denominator;
+ cout << "Enter the numerator: ";
+ cin >> numerator;
+ cout << "Enter the denominator: ";
+ cin >> denominator;
+ try {
+ double result = divideNumbers(numerator, denominator);
+ cout << "Result: " << result << endl;
+ } catch (const DivideByZeroException& ex) {
+ cout << ex.what() << endl;
+ } catch (const NegativeNumberException& ex) {
+ cout << ex.what() << endl;
+ } catch (...) {
+ cout << "Unknown exception occurred." << endl;
+ }
+ return 0;
+}
